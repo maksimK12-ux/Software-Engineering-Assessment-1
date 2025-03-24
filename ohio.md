@@ -32,7 +32,9 @@
 
 ### Non-Functional Specifications
 * Performance
+    * The Performance of this system should not be too slow in order to maintain user engagement. To ensure this program is efficient, it must have the correct data and display it well.
 * Useability and Accesibility
 * Reliability
 
 
+![alt test](gantt_chart.png "Gantt chart")
