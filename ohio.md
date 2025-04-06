@@ -1,4 +1,4 @@
-# 11 ASE Task 1 - Data Scinece Project
+# 11 ASE Task 1 - Data Science Project
 
 # Requirements Definition
 ## Functional Requirements
@@ -38,3 +38,4 @@
 
 
 ![alt test](gantt_chart.png "Gantt chart")
+![alt test](structure_chart.png "Structure chart")
