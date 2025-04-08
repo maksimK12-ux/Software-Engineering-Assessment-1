@@ -3,6 +3,7 @@ import json
 import os
 import tkinter as tk
 from tkinter import messagebox
+from tkinter import simpledialog
 
 # API Base URL
 API_URL = "https://pokeapi.co/api/v2/pokemon/"
@@ -11,6 +12,7 @@ API_URL = "https://pokeapi.co/api/v2/pokemon/"
 team = {}
 
 compare_vars = {}
+checkbuttons = {}
 
 def search_pokemon(pokemon_name):
     """Search for a Pokémon in the PokéAPI and return its details."""
@@ -48,6 +50,9 @@ def add_pokemon_to_team(pokemon_name):
     if pokemon:
         team[pokemon["name"]] = pokemon
         print(f"{pokemon['name']} added to your team!")
+        return True
+    else:
+        return False
 
 def save_team():
     with open("team.json", "w") as f:
@@ -117,6 +122,44 @@ def compare_stats():
 
     messagebox.showinfo("Stat Comparison", message)
 
+def remove_pokemon():
+    selected = []
+    for pokemon_name, tick_flag in compare_vars.items():
+        if tick_flag.get(): # Means checkbox is ticked
+            selected.append(pokemon_name)
+
+    # print(selected) 
+
+    if len(selected) != 1:
+        messagebox.showwarning("Selection Problem", "Please pick one Pokémon to remove")
+        return 
+
+    p1 = selected[0]
+    confirm = messagebox.askyesno("Confirm Removal", "Remove " + p1 + " from the team? \n WARNING: You will need relaunch the program to see the updated team.")
+    if confirm:
+        del team[p1]
+        save_team()
+        messagebox.showinfo("Removed", "The Pokémon " + p1 + " has been removed from the team successfully.\n WARNING: Exiting...")  
+        exit_app()
+
+def add_pokemon():
+    name = simpledialog.askstring("Add Pokémon", "Enter name of the new Pokémon to add \n WARNING: You will need relaunch the program to see the updated team once added.")
+
+    # TODO
+    # check if added already :  team
+
+    if name is None or not str(name).isalnum():
+        messagebox.showinfo("Info", "The name of the Pokémon must be all letters or numbers")
+        return None
+    name = name.lower()
+
+    result = add_pokemon_to_team(name)
+    if result:
+        save_team()
+        messagebox.showinfo("Added", "The Pokémon " + name + " has been added to the team successfully.\n WARNING: Exiting...")  
+        exit_app()
+    else:
+        messagebox.showinfo("Info", "The Pokémon " + name + " has NOT been found")     
 
 def show_help():
     print('show_help')
@@ -128,12 +171,19 @@ team_frame = tk.LabelFrame(root, text="Your Pokémon Team", width=1000, height=6
 team_frame.grid(row=0, column=0, padx = 10, pady = 10)
 team_frame.grid_propagate(False)
 
+""" For some reason the following did not work -- empty space.. """
+# name_frame = tk.Frame(root)
+# name_frame.grid(row=1, column=0, padx = 10, pady = 10)
+# tk.Label(name_frame, text="Enter name of new Pokemon").grid(row=0, column=0, padx=10)
+
 button_frame = tk.Frame(root)
 button_frame.grid(row=1, column=0, pady=10)
 
 tk.Button(button_frame, text="Compare", command=compare_stats).grid(row=0, column=0, padx=10)
-tk.Button(button_frame, text="Help", command=show_help).grid(row=0, column=1, padx=5)
-tk.Button(button_frame, text="Exit", command=exit_app).grid(row=0, column=2, padx=5)
+tk.Button(button_frame, text="Add", command=add_pokemon).grid(row=0, column=1, padx=10)
+tk.Button(button_frame, text="Remove", command=remove_pokemon).grid(row=0, column=2, padx=10)
+tk.Button(button_frame, text="Help", command=show_help).grid(row=0, column=3, padx=5)
+tk.Button(button_frame, text="Exit", command=exit_app).grid(row=0, column=4, padx=5)
 
 
 def put_team_into_UI():
@@ -143,11 +193,12 @@ def put_team_into_UI():
         chk = tk.Checkbutton(team_frame, text=name, variable=var, anchor='w')
         chk.pack(anchor='w')
         compare_vars[name] = var
+        checkbuttons[name] = chk
 
 
 def main(): 
     load_team()
-    print(json.dumps(team, indent=2))
+    # print(json.dumps(team, indent=2))
 
     put_team_into_UI()
 
