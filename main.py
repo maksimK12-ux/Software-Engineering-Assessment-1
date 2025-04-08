@@ -23,7 +23,7 @@ def search_pokemon(pokemon_name):
 
     response = requests.get(API_URL + pokemon_name.lower())
 
-    # with open("t.json", "w") as f:
+    # with open("sample.json", "w") as f:
     #     json.dump(response.json(), f)
 
     if response.status_code == 200:
@@ -69,18 +69,11 @@ def load_team():
 
 # print(search_pokemon('ditto'))
 # print(search_pokemon('bulbasaur'))
-# print(search_pokemon('charizard'))
-# print(search_pokemon('zarude'))
-# print(search_pokemon('pecharunt'))
 
-# add_pokemon_to_team('charizard')
 # add_pokemon_to_team('zarude')
 # add_pokemon_to_team('metagross')
 # add_pokemon_to_team('conkeldurr')
 # save_team()
-
-# add_pokemon_to_team(None)
-# add_pokemon_to_team('lakosh')
 
 # load_team()
 # print(json.dumps(team, indent=2))
@@ -143,6 +136,11 @@ def remove_pokemon():
         exit_app()
 
 def add_pokemon():
+
+    if len(team) >= 6:
+        messagebox.showinfo("Info", "The team already has 6 Pokémon and is therefore full.")
+        return None
+
     name = simpledialog.askstring("Add Pokémon", "Enter name of the new Pokémon to add \n WARNING: You will need relaunch the program to see the updated team once added.")
 
     # TODO
@@ -162,7 +160,22 @@ def add_pokemon():
         messagebox.showinfo("Info", "The Pokémon " + name + " has NOT been found")     
 
 def show_help():
-    print('show_help')
+    help_text = (
+        "Pokédex Explorer - Help\n\n"
+        "- Add Pokémon:\n"
+        "  Click 'Add Pokémon' to enter a name (e.g. pikachu). If found online, it will be added to your team.\n\n"
+        "- View Team:\n"
+        "  Your current team appears as a list with checkboxes. You can store up to 6 Pokémon.\n\n"
+        "- Compare Stats:\n"
+        "  Tick exactly two Pokémon, then click 'Compare' to view their stats side by side.\n\n"
+        "- Remove Pokémon:\n"
+        "  Enter a name in the input field and click 'Remove' to delete it from your team.\n\n"
+        "- Save and Load:\n"
+        "  Your team is saved automatically. It will load again when you reopen the application.\n\n"
+        "- Exit:\n"
+        "  Click 'Exit' to close the application.\n\n"
+    )
+    messagebox.showinfo("Help", help_text)
 
 def exit_app():
     root.destroy()
