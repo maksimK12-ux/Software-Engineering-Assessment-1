@@ -14,17 +14,18 @@ team = {}
 compare_vars = {}
 checkbuttons = {}
 
+# Lines 1-15: These lines of code import necessary libraries and sets up global variables.
+
 def search_pokemon(pokemon_name):
     """Search for a Pokémon in the PokéAPI and return its details."""
+
+    # Searches for a Pokémon by name via the PokéAPI and returns its details (name, ID, stats, etc.).
 
     if pokemon_name is None or not str(pokemon_name).isalnum():
         print("The name of the Pokémon must be all letters or numbers")
         return None
 
     response = requests.get(API_URL + pokemon_name.lower())
-
-    # with open("sample.json", "w") as f:
-    #     json.dump(response.json(), f)
 
     if response.status_code == 200:
         data = response.json()
@@ -46,6 +47,9 @@ def search_pokemon(pokemon_name):
 
 def add_pokemon_to_team(pokemon_name):
     """Add a Pokémon to the team if it exists in the API."""
+
+    # Adds a Pokémon to the team dictionary after verifying its existence using the search_pokemon function.
+
     pokemon = search_pokemon(pokemon_name)
     if pokemon:
         team[pokemon["name"]] = pokemon
@@ -58,6 +62,8 @@ def save_team():
     with open("team.json", "w") as f:
         json.dump(team, f, indent=2)
 
+        # Saves the current Pokémon team to a team.json file in a readable format.
+
 def load_team():
     if os.path.exists("team.json"):
         print('exists')
@@ -65,22 +71,13 @@ def load_team():
             global team
             team = json.load(f)
 
-# print('yes')
-
-# print(search_pokemon('ditto'))
-# print(search_pokemon('bulbasaur'))
-
-# add_pokemon_to_team('zarude')
-# add_pokemon_to_team('metagross')
-# add_pokemon_to_team('conkeldurr')
-# save_team()
-
-# load_team()
-# print(json.dumps(team, indent=2))
+        #  Loads the saved team from the team.json file, if it exists, into the team dictionary.
 
 
 root = tk.Tk()
 root.title("Pokedex")
+
+# Creates the main Tkinter window and sets the window title to Pokedex.
 
 
 def compare_stats():
@@ -94,6 +91,8 @@ def compare_stats():
     if len(selected) != 2:
         messagebox.showwarning("Selection Problem", "Please pick exactly two Pokémon")
         return 
+    
+    # Compares the stats of two Pokémon selected by the user and displays the comparison in a message box.
     
     p1 = selected[0]
     p2 = selected[1]
@@ -121,7 +120,8 @@ def remove_pokemon():
         if tick_flag.get(): # Means checkbox is ticked
             selected.append(pokemon_name)
 
-    # print(selected) 
+        # Removes a selected Pokémon from the team and updates the saved team, while prompting the user for confirmation.
+
 
     if len(selected) != 1:
         messagebox.showwarning("Selection Problem", "Please pick one Pokémon to remove")
@@ -135,6 +135,8 @@ def remove_pokemon():
         messagebox.showinfo("Removed", "The Pokémon " + p1 + " has been removed from the team successfully.\n WARNING: Exiting...")  
         exit_app()
 
+        # Confirms that a Pokémon was selected for removal
+
 def add_pokemon():
 
     if len(team) >= 6:
@@ -143,8 +145,7 @@ def add_pokemon():
 
     name = simpledialog.askstring("Add Pokémon", "Enter name of the new Pokémon to add \n WARNING: You will need relaunch the program to see the updated team once added.")
 
-    # TODO
-    # check if added already :  team
+    # Adds a new Pokémon to the team after checking if the team is full and verifying the Pokémon's existence via the PokéAPI.
 
     if name is None or not str(name).isalnum():
         messagebox.showinfo("Info", "The name of the Pokémon must be all letters or numbers")
@@ -177,17 +178,19 @@ def show_help():
     )
     messagebox.showinfo("Help", help_text)
 
+    # Displays help information about how to use the application via a message box.
+
 def exit_app():
     root.destroy()
+
+    # Closes the Tkinter application window.
 
 team_frame = tk.LabelFrame(root, text="Your Pokémon Team", width=1000, height=650)
 team_frame.grid(row=0, column=0, padx = 10, pady = 10)
 team_frame.grid_propagate(False)
 
-""" For some reason the following did not work -- empty space.. """
-# name_frame = tk.Frame(root)
-# name_frame.grid(row=1, column=0, padx = 10, pady = 10)
-# tk.Label(name_frame, text="Enter name of new Pokemon").grid(row=0, column=0, padx=10)
+# Creates a frame to display the list of Pokémon in the team within the Tkinter window.
+
 
 button_frame = tk.Frame(root)
 button_frame.grid(row=1, column=0, pady=10)
@@ -197,6 +200,8 @@ tk.Button(button_frame, text="Add", command=add_pokemon).grid(row=0, column=1, p
 tk.Button(button_frame, text="Remove", command=remove_pokemon).grid(row=0, column=2, padx=10)
 tk.Button(button_frame, text="Help", command=show_help).grid(row=0, column=3, padx=5)
 tk.Button(button_frame, text="Exit", command=exit_app).grid(row=0, column=4, padx=5)
+
+# Creates and places buttons in the Tkinter window to perform various actions.
 
 
 def put_team_into_UI():
@@ -208,14 +213,17 @@ def put_team_into_UI():
         compare_vars[name] = var
         checkbuttons[name] = chk
 
+        # Populates the team frame with checkboxes for each Pokémon in the team, allowing the user to select Pokémon for comparison or removal.
+
 
 def main(): 
     load_team()
-    # print(json.dumps(team, indent=2))
 
     put_team_into_UI()
 
     root.mainloop()
+
+    # Loads the saved team, updates the UI with the Pokémon in the team, and starts the Tkinter event loop to run the application.
 
 if __name__ == '__main__':
     main()
