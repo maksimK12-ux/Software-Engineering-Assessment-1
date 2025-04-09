@@ -12,46 +12,5 @@
     "special_attack": 109,
     "special_defense": 85,
     "speed": 100
-  },
-  "Zarude": {
-    "name": "Zarude",
-    "id": 893,
-    "type": [
-      "dark",
-      "grass"
-    ],
-    "hp": 105,
-    "attack": 120,
-    "defense": 105,
-    "special_attack": 70,
-    "special_defense": 95,
-    "speed": 105
-  },
-  "Metagross": {
-    "name": "Metagross",
-    "id": 376,
-    "type": [
-      "steel",
-      "psychic"
-    ],
-    "hp": 80,
-    "attack": 135,
-    "defense": 130,
-    "special_attack": 95,
-    "special_defense": 90,
-    "speed": 70
-  },
-  "Eevee": {
-    "name": "Eevee",
-    "id": 133,
-    "type": [
-      "normal"
-    ],
-    "hp": 55,
-    "attack": 55,
-    "defense": 50,
-    "special_attack": 45,
-    "special_defense": 65,
-    "speed": 55
   }
 }
