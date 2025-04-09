@@ -39,3 +39,4 @@
 
 ![alt test](gantt_chart.png "Gantt chart")
 ![alt test](structure_chart.png "Structure chart")
+![alt test](data_dictionary.png "Data dictionary")
